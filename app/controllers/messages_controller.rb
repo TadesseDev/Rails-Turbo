@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
-  before_action :index, only: %i[create]
+  before_action :index, only: %i[create destroy]
 
   # GET /messages or /messages.json
   def index
@@ -44,7 +44,7 @@ class MessagesController < ApplicationController
         format.turbo_stream  do
           render turbo_stream: [
           turbo_stream.update('new_message', partial: "form", locals:{message: Message.new}),
-          turbo_stream.update('messages_counter', html: @messages.length+1),
+          turbo_stream.update('messages_counter', @messages.length),
           turbo_stream.prepend('messages', partial: "message", locals:{message: @message})
           ]
         end
@@ -84,7 +84,8 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.remove(@message)
+          turbo_stream.remove(@message),
+          turbo_stream.update("messages_counter", @messages.length)
         ]
       end
       format.html { redirect_to messages_url, notice: "Message was successfully destroyed." }
