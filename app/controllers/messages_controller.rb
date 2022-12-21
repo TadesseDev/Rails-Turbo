@@ -43,6 +43,7 @@ class MessagesController < ApplicationController
         format.turbo_stream  do
           render turbo_stream: [
           turbo_stream.update('new_message', partial: "form", locals:{message: Message.new}),
+          turbo_stream.update('messages_counter', html: "Messages #{Message.all.length}"),
           turbo_stream.prepend('messages', partial: "message", locals:{message: @message})
           ]
         end

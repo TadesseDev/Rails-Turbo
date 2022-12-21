@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 <%= Time.now%>
-<h1>Messages</h1>
+<h1 id="messages_counter">Messages <%= @messages.length%></h1>
 <div id="new_message">
 <%= render "form", message: Message.new %>
 </div>
