@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
+  before_action :index, only: %i[create]
 
   # GET /messages or /messages.json
   def index
@@ -43,7 +44,7 @@ class MessagesController < ApplicationController
         format.turbo_stream  do
           render turbo_stream: [
           turbo_stream.update('new_message', partial: "form", locals:{message: Message.new}),
-          turbo_stream.update('messages_counter', html: "Messages #{Message.all.length}"),
+          turbo_stream.update('messages_counter', html: @messages.length+1),
           turbo_stream.prepend('messages', partial: "message", locals:{message: @message})
           ]
         end
