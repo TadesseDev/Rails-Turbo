@@ -6,10 +6,7 @@
 </div>
 <div id="messages">
   <% @messages.each do |message| %>
-  <div id="<%= dom_id message%>">
-
     <%= render message %>
-  </div>
   <% end %>
 </div>
 
