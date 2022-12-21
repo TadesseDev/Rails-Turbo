@@ -17,7 +17,6 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/edit
   def edit
-    @message=Message.find params[:id]
     if @message
       p "hitting the edit action edit_message_#{@message.id}"
       respond_to do |format|
@@ -62,6 +61,11 @@ class MessagesController < ApplicationController
   def update
     respond_to do |format|
       if @message.update(message_params)
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+          @message, partial: "message", locals:{message: @message}
+          )
+        end
         format.html { redirect_to message_url(@message), notice: "Message was successfully updated." }
         format.json { render :show, status: :ok, location: @message }
       else
