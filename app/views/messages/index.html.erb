@@ -1,15 +1,20 @@
 <p style="color: green"><%= notice %></p>
-
+<%= Time.now%>
 <h1>Messages</h1>
 <div id="new_message">
 <%= render "form", message: Message.new %>
 </div>
 <div id="messages">
   <% @messages.each do |message| %>
+  <div id="<%= dom_id message%>">
+
     <%= render message %>
     <p>
       <%= link_to "Show this message", message %>
     </p>
+
+  <%= button_to "Destroy this message", message, method: :delete %>
+  </div>
   <% end %>
 </div>
 
