@@ -17,6 +17,22 @@ class MessagesController < ApplicationController
 
   # GET /messages/1/edit
   def edit
+    @message=Message.find params[:id]
+    if @message
+      p "hitting the edit action edit_message_#{@message.id}"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+          "edit_message_#{@message.id}", partial: "form", locals:{message: @message}
+          )
+        end
+          format.html { render :edit, status: :ok }
+          format.json { render json: message, status: :ok }
+      end
+    else
+          format.html { render :edit, status: :ok }
+          format.json { render json: message, status: :ok }
+    end
   end
 
   # POST /messages or /messages.json
